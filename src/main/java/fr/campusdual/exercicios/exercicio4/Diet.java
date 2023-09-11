@@ -242,12 +242,12 @@ public class Diet {
             }
             if (this.women==false){
                 sb.append("Esta dieta está pensada para un hombre de peso : "
-                        +this.weight+" , altura: "+this.height+" y edad : "+this.age);
+                        +this.weight+" , altura: "+this.height+" y edad : "+this.age + " .");
             }
 
         }
         if (!this.foodMap.isEmpty()){
-            sb.append("Calorías totales de la Dieta : ").append(calculateTotalCalories(foodMap).toString());
+            sb.append(" Calorías totales de la Dieta : ").append(calculateTotalCalories(foodMap).toString());
 
         }
         return sb.toString();

@@ -237,7 +237,7 @@ public class Menu {
                     foodCreator();
                     break;
                 case 3:
-                    TMBRestrictionDiet.toString();
+                    System.out.println(TMBRestrictionDiet.toString());
                     break;
                 case 4:
                     modificarParametrosTMB();
@@ -353,12 +353,15 @@ public class Menu {
     }
     private static Integer metabolismoBasal(Diet diet) throws Exception {
         Integer metabolismoBasal = 0;
-        Integer foodCalories = TMBRestrictionDiet.calculateTotalCalories(TMBRestrictionDiet.getFoodMap());
+        Integer foodCalories = diet.calculateTotalCalories(TMBRestrictionDiet.getFoodMap());
+        if (diet.getWomen()==null){
+            modificarParametrosTMB();
+        }
 
         // Verifica si la persona es mujer (true) o no (false)
-        if (TMBRestrictionDiet.getWomen()) {
+        if (diet.getWomen()) {
             // Fórmula para el metabolismo basal en mujeres
-            metabolismoBasal = (int) (10 * (TMBRestrictionDiet.getWeight()) + 6.25 * (TMBRestrictionDiet.getHeight()) - 5 * (TMBRestrictionDiet.getAge()) - 161);
+            metabolismoBasal = (int) (10 * (diet.getWeight()) + 6.25 * (diet.getHeight()) - 5 * (diet.getAge()) - 161);
 
             // Comprueba si las calorías de la dieta superan el metabolismo basal
             if (metabolismoBasal < foodCalories) {
@@ -368,7 +371,7 @@ public class Menu {
         // Si la persona no es mujer (hombre)
         else if (!diet.getWomen()) {
             // Fórmula para el metabolismo basal en hombres
-            metabolismoBasal = (int) (10 * (TMBRestrictionDiet.getWeight()) + 6.25 * (TMBRestrictionDiet.getHeight()) - 5 * (TMBRestrictionDiet.getAge()) + 5);
+            metabolismoBasal = (int) (10 * (diet.getWeight()) + 6.25 * (diet.getHeight()) - 5 * (diet.getAge()) + 5);
         }
 
         // Comprueba nuevamente si las calorías de la dieta superan el metabolismo basal
@@ -614,6 +617,10 @@ public class Menu {
                 while (!salir){
 
                 System.out.println("0. Salir");
+                    if (foodList.isEmpty()){
+                        System.out.println("Todavía no hay alimentos guardados en la lista, vamos a crear alguno : ");
+                        foodCreator();
+                    }
 
                 for (int i = 0; i < foodList.size(); i++) {
 
@@ -629,6 +636,7 @@ public class Menu {
                 }
 
 
+
                 System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir: ");
                 int selectedFoodIndex = scanner.nextInt();
                 scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
@@ -637,6 +645,7 @@ public class Menu {
                     System.out.println("Saliendo del programa.");
                     salir=true;
                 } else if(selectedFoodIndex >= 1 && selectedFoodIndex <= foodList.size()) {
+
                     Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                     System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
@@ -644,9 +653,9 @@ public class Menu {
 
                     // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
                     dietFoodMap.put(selectedFood, grams);
-                    TMBcaloriesRestrictionDietFromSelectFood.setFoodMap(dietFoodMap);
-                    TMBRestrictionDiet.overMaxCalories(dietFoodMap,metabolismoBasal(TMBcaloriesRestrictionDietFromSelectFood));
-                    TMBRestrictionDiet=TMBcaloriesRestrictionDietFromSelectFood;
+                    TMBRestrictionDiet.overMaxCalories(dietFoodMap,metabolismoBasal(TMBRestrictionDiet));
+                    TMBRestrictionDiet.setFoodMap(dietFoodMap);
+                    maxCalories= metabolismoBasal(TMBRestrictionDiet);
 
 
                     System.out.println(ALIMENTO_ENGADIDO);
