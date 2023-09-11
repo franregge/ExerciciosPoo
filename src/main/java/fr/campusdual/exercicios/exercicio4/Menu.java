@@ -67,19 +67,19 @@ public class Menu {
 
                         case 3:
 
-                            System.out.println(noRestrictionDiet.toString());
+                           showDietDetails(noRestrictionDiet);
 
                         case 4:
 
-                            System.out.println(caloriesRestrictionDiet.toString());
+                            showDietDetails(caloriesRestrictionDiet);
 
                         case 5:
 
-                            System.out.println(parameterRestrictionDiet.toString());
+                            showDietDetails(parameterRestrictionDiet);
 
                         case 6:
 
-                            System.out.println(TMBRestrictionDiet.toString());
+                            showDietDetails(TMBRestrictionDiet);
 
                         case 7:
                             salir=true;
@@ -237,7 +237,7 @@ public class Menu {
                     foodCreator();
                     break;
                 case 3:
-                    System.out.println(TMBRestrictionDiet.toString());
+                    showDietDetails(TMBRestrictionDiet);
                     break;
                 case 4:
                     modificarParametrosTMB();
@@ -275,7 +275,7 @@ public class Menu {
                     foodCreator();
                     break;
                 case 3:
-                    System.out.println(caloriesRestrictionDiet.toString());
+                    showDietDetails(caloriesRestrictionDiet);
                     break;
                 case 4:
                     modificarRestriccionCalorica();
@@ -321,7 +321,7 @@ public class Menu {
                             foodCreator();
                             break;
                         case 3:
-                            System.out.println(parameterRestrictionDiet.toString());
+                            showDietDetails(parameterRestrictionDiet);
                             break;
                         case 4:
                             modificarRestriccionNutrientes();
@@ -409,7 +409,7 @@ public class Menu {
                         foodCreator();
                         break;
                     case 3:
-                        System.out.println(noRestrictionDiet.toString());
+                        showDietDetails(noRestrictionDiet);
                         break;
                     case 4:
                         salir=true;
@@ -419,8 +419,8 @@ public class Menu {
                 }
                 }
             }
-    public static String  showDietDetails(Diet diet){
-    return diet.toString();
+    public static void showDietDetails(Diet diet){
+        System.out.println(diet.toString());
 }
 
     public static Diet selectFood(){
