@@ -1,6 +1,4 @@
-package fr.campusdual.exercicios.exercicio4;
-
-import fr.campusdual.exercicios.exercicio5.User;
+package fr.campusdual.exercicios.exercicio5;
 
 import java.util.*;
 
@@ -18,8 +16,6 @@ import java.util.*;
 	-4. Salir
 * */
 public class Menu {
-    public static List<User> users= new ArrayList<>();
-    public static User actualUser;
     public static List<Food> foodList = new ArrayList<Food>(); // ArrayList para almacenar alimentos
     public static Scanner scanner= new Scanner(System.in);
     public static Diet noRestrictionDiet = new Diet();
@@ -46,64 +42,12 @@ public class Menu {
 
             menu();
             }
-        public static void dietCreatorMenu() throws Exception {
-        boolean salir=false;
-        while (!salir) {
-
-            System.out.println("Welcome to your Diet creator");
-
-
-            System.out.println("1. Crear alimento");
-            System.out.println("2. Crear Dieta");
-            System.out.println("3. Detalles de dieta actual sin restricciones");
-            System.out.println("4. Detalles de dieta actual con restricción de calorías");
-            System.out.println("5. Detalles de dieta actual con restricción de nutrientes");
-            System.out.println("6. Detalles de dieta actual con restricción por TMB");
-            System.out.println("7. Salir");
-            Integer input = scanner.nextInt();
-            switch (input) {
-                case 1:
-                    foodCreator();
-                case 2:
-
-                    dietCreator();
-
-                case 3:
-
-                    showDietDetails(noRestrictionDiet);
-
-                case 4:
-
-                    showDietDetails(caloriesRestrictionDiet);
-
-                case 5:
-
-                    showDietDetails(parameterRestrictionDiet);
-
-                case 6:
-
-                    showDietDetails(TMBRestrictionDiet);
-
-                case 7:
-                    salir=true;
-                default:
-                    break;
-
-            }
-        }
-
-
-    }
-        public static void menu() throws Exception {
+            public static void menu() throws Exception {
                 Scanner scanner = new Scanner(System.in);
-
-
                 boolean salir=false;
                 while (!salir) {
 
-                    System.out.println("Bienvenido a la aplicación. ");
-
-                    actualUser.login();
+                    System.out.println("Welcome to your Diet creator");
 
 
                     System.out.println("1. Crear alimento");
@@ -231,7 +175,7 @@ public class Menu {
                     }
                 }
 
-    public static void modificarParametrosTMB() {
+    private static void modificarParametrosTMB() {
         System.out.println("Introduzca su edad :");
         Integer age = scanner.nextInt();
         TMBRestrictionDiet.setAge(age);
@@ -677,7 +621,6 @@ public class Menu {
                         System.out.println("Todavía no hay alimentos guardados en la lista, vamos a crear alguno : ");
                         foodCreator();
                     }
-                System.out.println("Esta es la lista de alimentos disponibles : ");
 
                 for (int i = 0; i < foodList.size(); i++) {
 
@@ -706,16 +649,11 @@ public class Menu {
                     Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                     System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-
                     Integer grams = scanner.nextInt();
 
                     // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
-
-                    if (!TMBRestrictionDiet.overMaxCalories(dietFoodMap, actualUser.metabolismoBasal(actualUser))){
-                        dietFoodMap.put(selectedFood, grams);
-                        TMBcaloriesRestrictionDietFromSelectFood.setFoodMap(dietFoodMap);
-                    }
-
+                    dietFoodMap.put(selectedFood, grams);
+                    TMBRestrictionDiet.overMaxCalories(dietFoodMap,metabolismoBasal(TMBRestrictionDiet));
                     TMBRestrictionDiet.setFoodMap(dietFoodMap);
                     maxCalories= metabolismoBasal(TMBRestrictionDiet);
 

@@ -1,4 +1,4 @@
-package fr.campusdual.exercicios.exercicio4;
+package fr.campusdual.exercicios.exercicio5;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class Diet {
         this.foodMap = new HashMap<>();
 
     }
-    public Diet(Map<Food,Integer> foodMap,Integer maxFats, Integer maxCarbs, Integer maxProtein){
+    public Diet(Map<Food,Integer> foodMap, Integer maxFats, Integer maxCarbs, Integer maxProtein){
         this.foodMap=foodMap;
         this.maxCarbs= maxCarbs;
         this.maxFats= maxFats;
@@ -182,22 +182,15 @@ public class Diet {
     public Map<Food,Integer> getFoodMap() {
         return foodMap;
     }
-    public boolean overMaxCalories(Map<Food,Integer>foodMap,Integer maxCalories) {
-
-        boolean overMaxCalories = false;
+    public void overMaxCalories(Map<Food,Integer>foodMap, Integer maxCalories) throws Exception {
 
         Integer actualDietCalories =calculateTotalCalories(foodMap);
         if (actualDietCalories>maxCalories){
-            System.out.println("Dadas tus características corporales, deberías consumir menos calorías . ");
-            overMaxCalories= true;
+            throw new Exception ("Your diet cant be over "+maxCalories+". Yours : "+actualDietCalories);
 
-        } else if (actualDietCalories<maxCalories){
-            overMaxCalories=false;
-            return overMaxCalories;
         }
-        return overMaxCalories;
-    }
 
+    }
     public void setFoodMap(Map<Food,Integer> foodMap) {
         this.foodMap = foodMap;
     }
@@ -217,7 +210,7 @@ public class Diet {
        }
        return totalDietWeight;
     }
-    public void addFood(Food food,Integer weight) throws Exception {
+    public void addFood(Food food, Integer weight) throws Exception {
         if (this.foodMap.containsKey(food)){
             throw new Exception("You cant repeat a food in a diet");
         }else {
