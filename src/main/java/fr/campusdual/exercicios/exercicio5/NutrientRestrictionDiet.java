@@ -236,7 +236,7 @@ public class NutrientRestrictionDiet extends Diet{
         }
         actualUser.addDietToList(nutrientRestrictionDiet);
         dietList.add(nutrientRestrictionDiet);
-        actualParameterRestrictionDiet=nutrientRestrictionDiet;tfrrrrrrrrrrrrrrrrrrrrrrrrrr
+        actualParameterRestrictionDiet=nutrientRestrictionDiet;
     }
 
 }
