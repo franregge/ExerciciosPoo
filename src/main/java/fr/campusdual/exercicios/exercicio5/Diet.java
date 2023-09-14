@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static fr.campusdual.exercicios.exercicio5.Day.selectDay;
+import static fr.campusdual.exercicios.exercicio5.Menu.*;
+import static fr.campusdual.exercicios.exercicio5.TMBRestrictionDiet.TMBRestrictionDietMenu;
+import static fr.campusdual.exercicios.exercicio5.User.modificarParametrosTMBActuales;
+
 /*
 * Escribe una clase dieta, que teniendo en cuenta una serie de alimentos,
 *  vaya sumando cantidades en gramos y calcule cuentas calorías, carbohidratos, proteinas
@@ -28,143 +33,46 @@ La clase dieta tiene que tener las siguientes funcionalidades:
 *
 * */
 public class Diet {
-    private Map<Food,Integer> foodMap;
-    private Integer maxCalories;
-    private Integer maxFats;
-    private Integer maxCarbs;
-    private Integer maxProtein;
-    private Boolean women;
-    private Integer age;
-    private Integer height;
-    private Integer weight;
+    private String name;
+    private Map<Day,Map<Food,Integer>> dietMap;
+    public Diet(String name,Map<Day, Map<Food, Integer>> dietMap) {
+        this.dietMap = dietMap;
+        this.name=name;
+    }
+    public Diet(Map<Day, Map<Food, Integer>> dietMap) {
+        this.dietMap = dietMap;
+    }
+    public Diet() {
+        this.dietMap = new HashMap<>();
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Map<Day, Map<Food, Integer>> getDietMap() {
+        return dietMap;
+    }
+    public Map<Food, Integer> getFoodMap(Day day) {
+
+        return this.dietMap.get(day);
+    }
+    public void setFoodMap(Map<Food,Integer> foodMap,Day day) {
+
+        this.dietMap.put(day, foodMap);
+    }
+    public void setDietMap(Map<Day, Map<Food, Integer>> dietMap) {
+        this.dietMap = dietMap;
+    }
 
     //crea una dieta con un máximo de calorías,
     // en cuanto se supera ese máximo cuando se adjunta un alimento se despliega un error
-    public Diet(Map<Food,Integer> foodMap, Integer maxCalories) throws Exception {
-        this.foodMap = foodMap;
-        this.maxCalories= maxCalories;
-        overMaxCalories(foodMap,maxCalories);
-
-    }
-    public Diet(){
-        this.foodMap = new HashMap<>();
-
-    }
-    public Diet(Map<Food,Integer> foodMap, Integer maxFats, Integer maxCarbs, Integer maxProtein){
-        this.foodMap=foodMap;
-        this.maxCarbs= maxCarbs;
-        this.maxFats= maxFats;
-        this.maxProtein = maxProtein;
-
-    }
     //crea una dieta con un máximo de estos tres valores,
     // si se supera alguno de ellos cuando se adjunta un alimento se indicara qué parámetro
     // se pasa y desplegará un error
-    public Diet(Map<Food,Integer> foodMap, Boolean women, Integer age, Integer height, Integer weight){
-        this.foodMap = foodMap;
-        this.women=women;
-        this.age=age;
-        this.height=height;
-        this.weight=weight;
-
-    }
-
-    public Integer getMaxCalories() {
-        return maxCalories;
-    }
-
-    public void setMaxCalories(Integer maxCalories) {
-        this.maxCalories = maxCalories;
-    }
-
-    public Integer getMaxFats() {
-        return maxFats;
-    }
-
-    public void setMaxFats(Integer maxFats) {
-        this.maxFats = maxFats;
-    }
-
-    public Integer getMaxCarbs() {
-        return maxCarbs;
-    }
-
-    public void setMaxCarbs(Integer maxCarbs) {
-        this.maxCarbs = maxCarbs;
-    }
-
-    public Integer getMaxProtein() {
-        return maxProtein;
-    }
-
-    public void setMaxProtein(Integer maxProtein) {
-        this.maxProtein = maxProtein;
-    }
-
-    public Boolean getWomen() {
-        return women;
-    }
-
-    public void setWomen(Boolean women) {
-        this.women = women;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
-
-    private Integer metabolismoBasal(Diet diet) throws Exception {
-        Integer metabolismoBasal = 0;
-        Integer foodCalories = diet.calculateTotalCalories(diet.foodMap);
-
-        // Verifica si la persona es mujer (true) o no (false)
-        if (diet.women == true) {
-            // Fórmula para el metabolismo basal en mujeres
-            metabolismoBasal = (int) (10 * (diet.weight) + 6.25 * (diet.height) - 5 * (diet.age) - 161);
-
-            // Comprueba si las calorías de la dieta superan el metabolismo basal
-            if (metabolismoBasal < foodCalories) {
-                throw new Exception("Necesitas menos calorías en tu dieta debido a tu TMB");
-            }
-        }
-        // Si la persona no es mujer (hombre)
-        else if (diet.women == false) {
-            // Fórmula para el metabolismo basal en hombres
-            metabolismoBasal = (int) (10 * (diet.weight) + 6.25 * (diet.height) - 5 * (diet.age) + 5);
-        }
-
-        // Comprueba nuevamente si las calorías de la dieta superan el metabolismo basal
-        if (metabolismoBasal < foodCalories) {
-            throw new Exception("Necesitas menos calorías en tu dieta debido a tu TMB");
-        }
-
-        return metabolismoBasal;
-    }
-
-
     //Calcula el metabolismo basal de la persona y lo asigna como máximo de calorías
     // en la dieta
-
     //CALCULAR METABOLISMO BASAL
            // E = edad
     //A = altura en centímetros
@@ -172,27 +80,57 @@ public class Diet {
     //Fórmula Hombres: TMB = 10P + 6,25A – 5E + 5
     //Fórmula Mujeres: TMB = 10P + 6,25A – 5E – 161
 
+    public static void dietCreator() throws Exception {
+        boolean salir = false;
+        while (!salir) {
+
+            System.out.println("Seleccione una opción de dieta: ");
+            System.out.println("1. Dieta sin límite de calorías.");
+            System.out.println("2. Dieta con límite de calorías.");
+            System.out.println("3. Dieta con límite de carbos, grasas y proteínas.");
+            System.out.println("4. Dieta con límite de calorías según tu TMB.");
+            System.out.println(SALIR);
+
+            Integer option = scanner.nextInt();
+
+            switch (option){
+                case 1:
+                    noRestrictionDietMenu();
+
+                case 2:
+                    modificarRestriccionCalorica();
+                    caloriesRestrictionDiet();
 
 
+                case 3:
+                    nutrientRestrictionDiet();
 
-    public Diet(Map<Food,Integer> foodMap) {
-        this.foodMap = foodMap;
+
+                case 4:
+                    modificarParametrosTMBActuales();
+                    TMBRestrictionDietMenu();
+
+
+                case 5:
+                    salir= true;
+                    break;
+                default:
+                    break;
+
+
+            }
+
+        }
     }
-
-    public Map<Food,Integer> getFoodMap() {
-        return foodMap;
-    }
-    public void overMaxCalories(Map<Food,Integer>foodMap, Integer maxCalories) throws Exception {
+    public boolean overMaxCalories(Map<Food,Integer>foodMap, Integer maxCalories) {
+        boolean overMaxCalories=false;
 
         Integer actualDietCalories =calculateTotalCalories(foodMap);
         if (actualDietCalories>maxCalories){
-            throw new Exception ("Your diet cant be over "+maxCalories+". Yours : "+actualDietCalories);
+            System.out.println("Tu dieta no puede pasarse de "+maxCalories+". Añadiendo este alimento serían : "+actualDietCalories);
+            overMaxCalories= true;
 
-        }
-
-    }
-    public void setFoodMap(Map<Food,Integer> foodMap) {
-        this.foodMap = foodMap;
+        }return overMaxCalories;
     }
     public Integer calculateTotalCalories (Map<Food,Integer> foodMap){
         Integer totalCalories = 0;
@@ -210,46 +148,100 @@ public class Diet {
        }
        return totalDietWeight;
     }
-    public void addFood(Food food, Integer weight) throws Exception {
-        if (this.foodMap.containsKey(food)){
-            throw new Exception("You cant repeat a food in a diet");
-        }else {
-            foodMap.put(food,weight);
+    public static NoRestrictionDiet selectFood(){
+
+        if (foodList.isEmpty()){
+            System.out.println("Todavía no hay alimentos en la lista, cree alguno : ");
+            Food.foodCreator();
         }
+
+        Map<Food, Integer> dietFoodMap = new HashMap<>();
+        NoRestrictionDiet noRestrictionDietFromSelectFood= new NoRestrictionDiet();
+        System.out.println("Escribe un nombre para tu dieta sin restricciones");
+        noRestrictionDietFromSelectFood.setName(scanner.nextLine());
+
+        Day selectedDay = selectDay();
+
+        System.out.println("0. Salir");// Map para la dieta
+
+        for (int i = 0; i < foodList.size(); i++) {
+
+            Food food = foodList.get(i);
+            System.out.println("Resumen del alimento #" + (i + 1) + ":");
+            System.out.println("Nombre: " + food.getName());
+            System.out.println("Carbohidratos: " + food.getCarbos() + " gramos");
+            System.out.println("Grasas: " + food.getFats() + " gramos");
+            System.out.println("Proteínas: " + food.getProteins() + " gramos");
+            System.out.println("Calorías (para 100 gramos): " + food.getCalories(100) + " calorías");
+            System.out.println("--------------------------");
+
+        }
+
+        System.out.print("Elige un alimento (ingresa el número correspondiente),o '0' para salir : ");
+        int selectedFoodIndex = scanner.nextInt();
+        scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+
+        if (selectedFoodIndex == 0) {
+            System.out.println("Saliendo del programa.");
+        } else if(selectedFoodIndex >= 1 && selectedFoodIndex <= foodList.size()) {
+            Food selectedFood = foodList.get(selectedFoodIndex - 1);
+
+            System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
+            Integer grams = scanner.nextInt();
+
+            // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
+            dietFoodMap.put(selectedFood, grams);
+            noRestrictionDietFromSelectFood.setFoodMap(dietFoodMap,selectedDay);
+
+
+            System.out.println(ALIMENTO_ENGADIDO);
+
+        } else {
+            System.out.println(INVALID_SELECTION);
+        }
+        dietList.add(noRestrictionDietFromSelectFood);
+
+        return noRestrictionDietFromSelectFood;
+    }
+    public void addFood(Food food, Integer weight,Day day) {
+
+        if (getFoodMap(day).containsKey(food)){
+            System.out.println("You cant repeat a food in a diet");
+        }else {
+            Map<Food,Integer>newFoodMap=getFoodMap(day);
+
+            newFoodMap.put(food,weight);
+
+            setFoodMap(newFoodMap,day);
+        }
+    }
+    public static void showDietDetails(Diet diet){
+        System.out.println(diet.toString());
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Lista de Alimentos en la Dieta:\n");
+        // Obtener todos los valores del enum Day
+        Day[] days = Day.values();
 
-        for (Food food : this.foodMap.keySet()) {
-            sb.append("Nombre: ").append(food.getName()).append("\n");
-            sb.append("Carbohidratos: ").append(food.getCarbos()).append(" gramos\n");
-            sb.append("Grasas: ").append(food.getFats()).append(" gramos\n");
-            sb.append("Proteínas: ").append(food.getProteins()).append(" gramos\n");
-            sb.append("Calorías (para 100 gramos): ").append(food.getCalories(100)).append(" calorías\n");
-            sb.append("--------------------------\n");
-
+        // Recorrer los días de la semana usando un bucle for
+        for (Day day : days) {
+            System.out.println("Día "+day.getName());
+            if (!this.getFoodMap(day).isEmpty()){
+                for (Food food : this.getFoodMap(day).keySet()) {
+                    sb.append("Nombre: ").append(food.getName()).append("\n");
+                    sb.append("Carbohidratos: ").append(food.getCarbos()).append(" gramos\n");
+                    sb.append("Grasas: ").append(food.getFats()).append(" gramos\n");
+                    sb.append("Proteínas: ").append(food.getProteins()).append(" gramos\n");
+                    sb.append("Calorías (para 100 gramos): ").append(food.getCalories(100)).append(" calorías\n");
+                    sb.append("--------------------------\n");
+                }
             }
-        if (this.maxCalories!=null) {
-            sb.append("Calorías máximas : " + this.maxCalories);
-        }
-        if(this.women!=null){
-            if (this.women==true) {
-                sb.append("Esta Dieta está pensada para una mujer, de peso : "
-                        +this.weight+" , altura: "+this.height+" y edad : "+this.age);
-            }
-            if (this.women==false){
-                sb.append("Esta dieta está pensada para un hombre de peso : "
-                        +this.weight+" , altura: "+this.height+" y edad : "+this.age + " .");
-            }
-
-        }
-        if (!this.foodMap.isEmpty()){
-            sb.append(" Calorías totales de la Dieta : ").append(calculateTotalCalories(foodMap).toString());
-
         }
         return sb.toString();
     }
+
+
 }

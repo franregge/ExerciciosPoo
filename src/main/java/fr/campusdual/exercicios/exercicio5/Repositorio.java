@@ -47,7 +47,7 @@ public class Repositorio {
 
                 case 5:
 
-                    food.showFoodDetails();
+                    food.showFoodList();
 
                 case 7:
                     salir=true;

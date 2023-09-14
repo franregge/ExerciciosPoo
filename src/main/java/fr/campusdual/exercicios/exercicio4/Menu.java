@@ -36,6 +36,7 @@ public class Menu {
     public static final String SALIR ="5. Salir. ";
     public static final String ALIMENTO_ENGADIDO ="Alimento añadido a tu dieta.";
     public static final String INVALID_SELECTION ="Selección de alimento no válida.";
+    public static final String OVER_MAX_CALORIES ="Con este alimento te pasas de calorías.";
 
 
 
@@ -665,68 +666,72 @@ public class Menu {
 
                 return caloriesRestrictionDietFromSelectFood;
             }
-    public static Diet TMBCaloriesRestrictionSelectFood() throws Exception {
+    public static Diet TMBCaloriesRestrictionSelectFood() {
 
-                Map<Food, Integer> dietFoodMap = new HashMap<Food, Integer>();
+                Map<Food, Integer> dietFoodMap = new HashMap<>();
                 Diet TMBcaloriesRestrictionDietFromSelectFood=new Diet();
                 boolean salir= false;
-                while (!salir){
+                while (!salir) {
 
-                System.out.println("0. Salir");
-                    if (foodList.isEmpty()){
+                    System.out.println("0. Salir");
+                    if (foodList.isEmpty()) {
                         System.out.println("Todavía no hay alimentos guardados en la lista, vamos a crear alguno : ");
                         foodCreator();
                     }
-                System.out.println("Esta es la lista de alimentos disponibles : ");
+                    System.out.println("Esta es la lista de alimentos disponibles : ");
 
-                for (int i = 0; i < foodList.size(); i++) {
+                    for (int i = 0; i < foodList.size(); i++) {
 
-                    Food food = foodList.get(i);
-                    System.out.println("Resumen del alimento #" + (i + 1) + ":");
-                    System.out.println("Nombre: " + food.getName());
-                    System.out.println("Carbohidratos: " + food.getCarbos() + " gramos");
-                    System.out.println("Grasas: " + food.getFats() + " gramos");
-                    System.out.println("Proteínas: " + food.getProteins() + " gramos");
-                    System.out.println("Calorías (para 100 gramos): " + food.getCalories(100) + " calorías");
-                    System.out.println("--------------------------");
+                        Food food = foodList.get(i);
+                        System.out.println("Resumen del alimento #" + (i + 1) + ":");
+                        System.out.println("Nombre: " + food.getName());
+                        System.out.println("Carbohidratos: " + food.getCarbos() + " gramos");
+                        System.out.println("Grasas: " + food.getFats() + " gramos");
+                        System.out.println("Proteínas: " + food.getProteins() + " gramos");
+                        System.out.println("Calorías (para 100 gramos): " + food.getCalories(100) + " calorías");
+                        System.out.println("--------------------------");
 
-                }
-
-
-
-                System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir: ");
-                int selectedFoodIndex = scanner.nextInt();
-                scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
-
-                if (selectedFoodIndex == 0) {
-                    System.out.println("Saliendo del programa.");
-                    salir=true;
-                } else if(selectedFoodIndex >= 1 && selectedFoodIndex <= foodList.size()) {
-
-                    Food selectedFood = foodList.get(selectedFoodIndex - 1);
-
-                    System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-
-                    Integer grams = scanner.nextInt();
-
-                    // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
-
-                    if (!TMBRestrictionDiet.overMaxCalories(dietFoodMap, actualUser.metabolismoBasal(actualUser))){
-                        dietFoodMap.put(selectedFood, grams);
-                        TMBcaloriesRestrictionDietFromSelectFood.setFoodMap(dietFoodMap);
                     }
 
-                    TMBRestrictionDiet.setFoodMap(dietFoodMap);
-                    maxCalories= metabolismoBasal(TMBRestrictionDiet);
+
+                    System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir: ");
+                    int selectedFoodIndex = scanner.nextInt();
+                    scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+
+                    if (selectedFoodIndex == 0) {
+                        System.out.println("Saliendo del programa.");
+                        salir = true;
+                    } else if (selectedFoodIndex >= 1 && selectedFoodIndex <= foodList.size()) {
+
+                        Food selectedFood = foodList.get(selectedFoodIndex - 1);
+
+                        System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
+
+                        Integer grams = scanner.nextInt();
+
+                        // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
+
+                        if (!TMBRestrictionDiet.overMaxCalories(dietFoodMap, actualUser.metabolismoBasal(actualUser))) {
+                            dietFoodMap.put(selectedFood, grams);
+                            TMBcaloriesRestrictionDietFromSelectFood.setFoodMap(dietFoodMap);
+                            TMBRestrictionDiet = TMBcaloriesRestrictionDietFromSelectFood;
+                            System.out.println(ALIMENTO_ENGADIDO);
 
 
-                    System.out.println(ALIMENTO_ENGADIDO);
+                        } else {
+                            System.out.println(INVALID_SELECTION);
+                            System.out.println(OVER_MAX_CALORIES+ "  "+selectedFood.getName());
+                            dietFoodMap.remove(selectedFood);
+                           TMBcaloriesRestrictionDietFromSelectFood.setFoodMap(dietFoodMap);
 
-                } else {
-                    System.out.println(INVALID_SELECTION);
+                        }
+                    }
+                    System.out.print("¿Deseas seguir seleccionando alimentos? (S/N): ");
+                    String respuesta = scanner.nextLine().trim().toUpperCase();
+                    if (!respuesta.equals("S")) {
+                        salir = true; // Salir del bucle si la respuesta no es "S"
+                    }
                 }
-                }
-
                 return TMBcaloriesRestrictionDietFromSelectFood;
             }
     }

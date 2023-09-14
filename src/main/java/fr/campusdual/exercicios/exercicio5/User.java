@@ -3,16 +3,16 @@ package fr.campusdual.exercicios.exercicio5;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fr.campusdual.exercicios.exercicio4.Menu.*;
+import static fr.campusdual.exercicios.exercicio5.Menu.*;
 
 public class User {
-    public List<Diet> dietList;
-    public String name;
-    public String password;
-    public Integer weight;
-    public Integer height;
-    public Integer age;
-    public boolean woman;
+    private List<Diet> dietList;
+    private String name;
+    private String password;
+    private Integer weight;
+    private Integer height;
+    private Integer age;
+    private boolean woman;
 
     public User(List<Diet> dietList, String name,String password, Integer weight, Integer height, Integer age,boolean woman) {
         this.dietList = dietList;
@@ -34,6 +34,14 @@ public class User {
 
     public void setDietList(List<Diet> dietList) {
         this.dietList = dietList;
+    }
+    public void addDietToList(Diet diet){
+        List<Diet>newDietList = actualUser.getDietList();
+        newDietList.add(diet);
+        setDietList(newDietList);
+    }
+    public void removeDietFromList(Diet diet){
+        this.dietList.remove(diet);
     }
 
     public String getName() {
@@ -89,13 +97,15 @@ public class User {
             System.out.println("No hay usuarios creados, sea usted el primero");
             userCreator();
         }else {
-            System.out.println("1. Entrar con mi usuario");
-            System.out.println("2. Crear un usuario");
-            System.out.println("3. Salir");
-            Integer menuOption= scanner.nextInt();
+
 
             boolean salir = false;
                 while (!salir){
+                    System.out.println("1. Entrar con mi usuario");
+                    System.out.println("2. Crear un usuario");
+                    System.out.println("3. Cerrar sesión");
+                    System.out.println("3. Atrás");
+                    Integer menuOption= scanner.nextInt();
                     switch (menuOption){
                         case 1:
                             System.out.println("Introduzca el nombre de usuario");
@@ -113,6 +123,9 @@ public class User {
                             break;
                         case 3:
                             actualUser=null;
+                            salir=true;
+                            break;
+                        case 4:
                             salir=true;
                             break;
                         default:
@@ -191,7 +204,7 @@ public class User {
         if (user.isWoman()){
             metabolismoBasal = (int) (10 * (user.getWeight()) + 6.25 * (user.getHeight()) - 5 * (user.getAge()) - 161);
 
-            modificarParametrosTMB();
+            modificarParametrosTMBActuales();
         }
 
         // Verifica si la persona es mujer (true) o no (false)
@@ -204,6 +217,7 @@ public class User {
     }
 
     public User userCreator() {
+
         System.out.println("-----------------------");
         System.out.println("Bienvenido al creador de Usuarios");
 
@@ -249,9 +263,10 @@ public class User {
         return newUser;
     }
     public User userDeleter() {
+
         System.out.println("-----------------------");
         System.out.println("Bienvenido al borrador de Usuarios");
-        if (actualUser==null){
+        if (actualUser.getName()==null){
             System.out.println("Para borrar su usuario debe hacer log in. ");
             login();
         }
@@ -295,6 +310,40 @@ public class User {
         newUser.setPassword(userPassword);
         return newUser;
     }
+    static void modificarParametrosTMBActuales() {
+        System.out.println("Introduzca su edad :");
+        Integer age = scanner.nextInt();
+        actualUser.setAge(age);
+
+        System.out.println("Introduzca su peso en kilos:");
+        Integer weight = scanner.nextInt();
+        actualUser.setWeight(weight);
+        System.out.println("Su peso es : "+ weight);
+
+        System.out.println("Introduzca su altura en centímetros:");
+        Integer height = scanner.nextInt();
+        actualUser.setHeight(height);
+        System.out.println("Su altura es : "+ height);
+
+        System.out.println("¿Hombre o mujer? : ");
+        System.out.println( "1. Hombre");
+        System.out.println( "2. Mujer");
+        Integer sexOption = scanner.nextInt();
+
+        switch (sexOption){
+            case 1 :
+                actualUser.setWoman(false);
+                break;
+            case 2:
+                actualUser.setWoman(true);
+                break;
+            default:
+                System.out.println("Tienes que elegir un sexo. ");
+                break;
+        }
+
+    }
+
 
     public User deleteUser(User userToRemove) {
 
@@ -304,6 +353,26 @@ public class User {
         return userToRemove;
     }
 
+    public void showUserDetails() {
+        System.out.println(actualUser.toString());
+    }
     public void showUsersDetails() {
+        for (User user : users){
+            System.out.println(user.toString());
+        }
+    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Información de Usuario :\n");
+
+        sb.append("Nombre: ").append(this.getName()).append("\n");
+        sb.append("Altura: ").append(this.getHeight()).append(" centímetros\n");
+        sb.append("Peso: ").append(this.getWeight()).append(" kilogramos\n");
+        sb.append("Edad: ").append(this.getAge()).append(" años\n");
+        sb.append("Límite de calorías por metabolismo basal: ").append(this.metabolismoBasal(this)).append(" calorías\n");
+        sb.append("--------------------------\n").toString();
+
+        return sb.toString();
     }
 }
