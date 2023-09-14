@@ -43,7 +43,7 @@ public class TMBRestrictionDiet extends Diet{
             System.out.println("4. Modificar valores corporales");
             System.out.println(SALIR);
 
-            Integer TMBRestrictionDietOption = scanner.nextInt();
+            Integer TMBRestrictionDietOption = Kb.nextInt();
 
             switch (TMBRestrictionDietOption){
                 case 1 :

@@ -63,8 +63,7 @@ public class NutrientRestrictionDiet extends Diet{
             }
 
             System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir : ");
-            int selectedFoodIndex = scanner.nextInt();
-            scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+            int selectedFoodIndex = Kb.nextInt();
 
             if (selectedFoodIndex == 0) {
                 System.out.println("Saliendo del programa.");
@@ -74,7 +73,7 @@ public class NutrientRestrictionDiet extends Diet{
                 Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                 System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-                Integer grams = scanner.nextInt();
+                Integer grams = Kb.nextInt();
 
                 // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
                 foodMap.put(selectedFood, grams);
@@ -108,7 +107,7 @@ public class NutrientRestrictionDiet extends Diet{
             System.out.println(i+1+". "+nutrientRestrictionDietList.get(i).toString());
         }
 
-        Integer dietOption = scanner.nextInt();
+        Integer dietOption = Kb.nextInt();
 
         return nutrientRestrictionDietList.get(dietOption-1);
     }
@@ -212,18 +211,18 @@ public class NutrientRestrictionDiet extends Diet{
             System.out.println("No has seleccionado ninguna dieta. ");
         }
         System.out.println("Introduzca el valor de la restricción de carbohidratos :");
-        Integer maxCarbo = scanner.nextInt();
+        Integer maxCarbo = Kb.nextInt();
         System.out.println("Límite de carbohidratos elegido : "+ maxCarbo);
 
         nutrientRestrictionDiet.setMaxCarbs(maxCarbo);
 
         System.out.println("Introduzca el valor de la restricción de grasas :");
-        Integer maxFat = scanner.nextInt();
+        Integer maxFat = Kb.nextInt();
         System.out.println("Límite de grasas elegido : "+ maxFat);
         nutrientRestrictionDiet.setMaxFats(maxFat);
 
         System.out.println("Introduzca el valor de la restricción de proteínas :");
-        Integer maxProtein = scanner.nextInt();
+        Integer maxProtein = Kb.nextInt();
         System.out.println("Límite de proteínas elegido : "+ maxProtein);
         nutrientRestrictionDiet.setMaxProtein(maxProtein);
 

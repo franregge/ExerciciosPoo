@@ -22,12 +22,12 @@ import static fr.campusdual.exercicios.exercicio5.User.*;
 public class Menu {
     public static List<User> users= new ArrayList<>();
     public static Day day;
-    public static Food food;
-    public static Diet diet;
+    public static Food food = new Food();
+    public static Diet diet= new Diet();
     public static List<Food> foodList = new ArrayList<>(); // ArrayList para almacenar alimentos
     public static List<Diet> dietList= new ArrayList<>();
-    public static Scanner scanner= new Scanner(System.in);
-    public static User actualUser;
+
+    public static User actualUser=new User();
     public static NoRestrictionDiet actualNoRestrictionDiet = new NoRestrictionDiet();
     public static CaloriesRestrictionDiet actualCaloriesRestrictionDiet =new CaloriesRestrictionDiet();
     public static NutrientRestrictionDiet actualParameterRestrictionDiet = new NutrientRestrictionDiet();
@@ -72,14 +72,23 @@ public class Menu {
                 switch (input) {
                     case 1:
                         actualUser.login();
+                        break;
                     case 2:
                         actualUser.userCreator();
+                        break;
+
                     case 3:
                         actualUser.userDeleter();
+                        break;
+
                     case 4:
                         Food.foodCreator();
+                        break;
+
                     case 5:
                         Diet.dietCreator();
+                        break;
+
                     case 6:
                         if(actualNoRestrictionDiet==null){
                             System.out.println("Todavía no has seleccionado ninguna dieta de este tipo");
@@ -240,7 +249,7 @@ public class Menu {
             }
         }
     }*/
-    public static void caloriesRestrictionDiet() throws Exception {
+    public static void caloriesRestrictionDiet()  {
         boolean salir = false;
 
         while(!salir){
@@ -254,7 +263,7 @@ public class Menu {
             System.out.println("4. Modificar restrición calórica");
             System.out.println(SALIR);
 
-            Integer caloriesRestrictionDietMenuOption=scanner.nextInt();
+            Integer caloriesRestrictionDietMenuOption=Kb.nextInt();
 
             switch (caloriesRestrictionDietMenuOption){
 
@@ -281,7 +290,7 @@ public class Menu {
     static void modificarRestriccionCalorica(){
 
         System.out.println("Introduzca el valor de la restricción de calorías :");
-        maxCalories = scanner.nextInt();
+        maxCalories = Kb.nextInt();
         System.out.println("Límite de calorías elegido : "+ maxCalories);
         actualCaloriesRestrictionDiet.setMaxCalories(maxCalories);
     }
@@ -302,7 +311,7 @@ public class Menu {
                     System.out.println("5. Ver dieta actual. ");
                     System.out.println("6. Modificar restriciónes");
                     System.out.println("7. Salir. ");
-                    Integer nutrientRestrictionDietMenuOption=scanner.nextInt();
+                    Integer nutrientRestrictionDietMenuOption=Kb.nextInt();
 
                     switch (nutrientRestrictionDietMenuOption){
 
@@ -335,17 +344,17 @@ public class Menu {
 
     static void modificarRestriccionNutrientes() {
         System.out.println("Introduzca el valor de la restricción de carbohidratos :");
-        maxCarbo = scanner.nextInt();
+        maxCarbo = Kb.nextInt();
         System.out.println("Límite de carbohidratos elegido : "+ maxCarbo);
         actualParameterRestrictionDiet.setMaxCarbs(maxCarbo);
 
         System.out.println("Introduzca el valor de la restricción de grasas :");
-        maxFat = scanner.nextInt();
+        maxFat = Kb.nextInt();
         System.out.println("Límite de grasas elegido : "+ maxFat);
         actualParameterRestrictionDiet.setMaxFats(maxFat);
 
         System.out.println("Introduzca el valor de la restricción de proteínas :");
-        maxProtein = scanner.nextInt();
+        maxProtein = Kb.nextInt();
         System.out.println("Límite de proteínas elegido : "+ maxProtein);
         actualParameterRestrictionDiet.setMaxProtein(maxProtein);
     }
@@ -354,6 +363,7 @@ public class Menu {
 
 
     public static void noRestrictionDietMenu(){
+
         boolean salir = false;
 
             while(!salir){
@@ -366,12 +376,12 @@ public class Menu {
                 System.out.println("2. Crear alimento. ");
                 System.out.println("3. Detalles de Dieta actual. ");
                 System.out.println("4. Salir. ");
-                Integer noRestrictionDietMenuOption = scanner.nextInt();
+                Integer noRestrictionDietMenuOption = Kb.nextInt();
 
                 switch (noRestrictionDietMenuOption){
 
                     case 1:
-                        actualNoRestrictionDiet=Diet.selectFood();
+                        actualNoRestrictionDiet=NoRestrictionDiet.selectFood();
                         break;
 
                     case 2:
@@ -398,7 +408,7 @@ public class Menu {
             Map<Food, Integer> dietFoodMap = new HashMap<>();
             NoRestrictionDiet noRestrictionDietFromSelectFood= new NoRestrictionDiet();
             System.out.println("Escribe un nombre para tu dieta sin restricciones");
-            noRestrictionDietFromSelectFood.setName(scanner.nextLine());
+            noRestrictionDietFromSelectFood.setName(Kb.nextLine());
 
             Day selectedDay = selectDay();
 
@@ -418,8 +428,8 @@ public class Menu {
             }
 
             System.out.print("Elige un alimento (ingresa el número correspondiente),o '0' para salir : ");
-            int selectedFoodIndex = scanner.nextInt();
-            scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+            int selectedFoodIndex = Kb.nextInt();
+            Kb.nextLine(); // Consumir la línea en blanco después del nextInt()
 
             if (selectedFoodIndex == 0) {
                 System.out.println("Saliendo del programa.");
@@ -427,7 +437,7 @@ public class Menu {
                 Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                 System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-                Integer grams = scanner.nextInt();
+                Integer grams = Kb.nextInt();
 
                 // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
                 dietFoodMap.put(selectedFood, grams);
@@ -477,8 +487,8 @@ public class Menu {
                 }
 
                 System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir : ");
-                int selectedFoodIndex = scanner.nextInt();
-                scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+                int selectedFoodIndex = Kb.nextInt();
+                Kb.nextLine(); // Consumir la línea en blanco después del nextInt()
 
                 if (selectedFoodIndex == 0) {
                     System.out.println("Saliendo del programa.");
@@ -488,7 +498,7 @@ public class Menu {
                     Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                     System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-                    Integer grams = scanner.nextInt();
+                    Integer grams = Kb.nextInt();
 
                     // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
                     foodMap.put(selectedFood, grams);
@@ -541,7 +551,7 @@ public class Menu {
                 CaloriesRestrictionDiet caloriesRestrictionDietFromSelectFood=new CaloriesRestrictionDiet();
                 System.out.println("Ingresa el número máximo de calorías diarias que desesas: ");
 
-                caloriesRestrictionDietFromSelectFood.setMaxCalories(scanner.nextInt());
+                caloriesRestrictionDietFromSelectFood.setMaxCalories(Kb.nextInt());
 
                 Day selectedDay = selectDay();
 
@@ -564,8 +574,7 @@ public class Menu {
                 }
 
                 System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir: ");
-                int selectedFoodIndex = scanner.nextInt();
-                scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+                int selectedFoodIndex = Kb.nextInt();
 
                 if (selectedFoodIndex == 0) {
                     System.out.println("Saliendo del programa.");
@@ -574,7 +583,7 @@ public class Menu {
                     Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                     System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-                    Integer grams = scanner.nextInt();
+                    Integer grams = Kb.nextInt();
 
                     // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
 
@@ -626,8 +635,7 @@ public class Menu {
                 }
 
                 System.out.print("Elige un alimento (ingresa el número correspondiente), o '0' para salir: ");
-                int selectedFoodIndex = scanner.nextInt();
-                scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+                int selectedFoodIndex = Kb.nextInt();
 
                 if (selectedFoodIndex == 0) {
                     System.out.println("Saliendo del programa.");
@@ -637,7 +645,7 @@ public class Menu {
                     Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
                     System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-                    Integer grams = scanner.nextInt();
+                    Integer grams = Kb.nextInt();
 
                     // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
                     dayFoodMap.put(selectedFood, grams);

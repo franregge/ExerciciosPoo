@@ -80,7 +80,7 @@ public class Diet {
     //Fórmula Hombres: TMB = 10P + 6,25A – 5E + 5
     //Fórmula Mujeres: TMB = 10P + 6,25A – 5E – 161
 
-    public static void dietCreator() throws Exception {
+    public static void dietCreator()  {
         boolean salir = false;
         while (!salir) {
 
@@ -91,7 +91,7 @@ public class Diet {
             System.out.println("4. Dieta con límite de calorías según tu TMB.");
             System.out.println(SALIR);
 
-            Integer option = scanner.nextInt();
+            Integer option = Kb.nextInt();
 
             switch (option){
                 case 1:
@@ -148,7 +148,7 @@ public class Diet {
        }
        return totalDietWeight;
     }
-    public static NoRestrictionDiet selectFood(){
+    public static Diet selectFood(){
 
         if (foodList.isEmpty()){
             System.out.println("Todavía no hay alimentos en la lista, cree alguno : ");
@@ -156,9 +156,18 @@ public class Diet {
         }
 
         Map<Food, Integer> dietFoodMap = new HashMap<>();
-        NoRestrictionDiet noRestrictionDietFromSelectFood= new NoRestrictionDiet();
-        System.out.println("Escribe un nombre para tu dieta sin restricciones");
-        noRestrictionDietFromSelectFood.setName(scanner.nextLine());
+        Diet diet= new Diet();
+
+        if (diet.getName()==null){
+
+            System.out.println("Escribe un nombre para tu dieta sin restricciones");
+
+            String dietName = Kb.nextLine();
+
+            diet.setName(dietName);
+
+        }
+
 
         Day selectedDay = selectDay();
 
@@ -178,8 +187,7 @@ public class Diet {
         }
 
         System.out.print("Elige un alimento (ingresa el número correspondiente),o '0' para salir : ");
-        int selectedFoodIndex = scanner.nextInt();
-        scanner.nextLine(); // Consumir la línea en blanco después del nextInt()
+        int selectedFoodIndex = Kb.nextInt();
 
         if (selectedFoodIndex == 0) {
             System.out.println("Saliendo del programa.");
@@ -187,11 +195,11 @@ public class Diet {
             Food selectedFood = foodList.get(selectedFoodIndex - 1);
 
             System.out.print("Ingresa la cantidad en gramos de " + selectedFood.getName() + ": ");
-            Integer grams = scanner.nextInt();
+            Integer grams = Kb.nextInt();
 
             // Agregar el alimento seleccionado como clave y la cantidad en gramos como valor al dietMap
             dietFoodMap.put(selectedFood, grams);
-            noRestrictionDietFromSelectFood.setFoodMap(dietFoodMap,selectedDay);
+            diet.setFoodMap(dietFoodMap,selectedDay);
 
 
             System.out.println(ALIMENTO_ENGADIDO);
@@ -199,9 +207,9 @@ public class Diet {
         } else {
             System.out.println(INVALID_SELECTION);
         }
-        dietList.add(noRestrictionDietFromSelectFood);
+        dietList.add(diet);
 
-        return noRestrictionDietFromSelectFood;
+        return diet;
     }
     public void addFood(Food food, Integer weight,Day day) {
 

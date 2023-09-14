@@ -1,8 +1,7 @@
 package fr.campusdual.exercicios.exercicio5;
 
 
-import java.util.List;
-import java.util.Scanner;
+
 
 import static fr.campusdual.exercicios.exercicio5.Menu.foodList;
 
@@ -27,58 +26,61 @@ public class Food {
 
         }
 
-        public Integer getCalories(Integer weight){
+    public Food() {
+
+    }
+
+    public Integer getCalories(Integer weight){
             //1 gramo de proteína nos da 4 calorías.
             // 1 gramo de carbohidratos nos da 4 calorías.
             // 1 gramo de grasa nos da 9 calorías
             return(((carbos*4)+(fats*9)+(proteins*4))*weight/100);
         }
 
-        public Integer getCarbos() {
-            return carbos;
-        }
+    public Integer getCarbos() {
+        return carbos;
+    }
 
-        public void setCarbos(Integer carbos) {
-            this.carbos = carbos;
-        }
+    public void setCarbos(Integer carbos) {
+        this.carbos = carbos;
+    }
 
-        public Integer getFats() {
-            return fats;
-        }
+    public Integer getFats() {
+        return fats;
+    }
 
-        public void setFats(Integer fats) {
-            this.fats = fats;
-        }
+    public void setFats(Integer fats) {
+        this.fats = fats;
+    }
 
-        public Integer getProteins() {
-            return proteins;
-        }
+    public Integer getProteins() {
+        return proteins;
+    }
 
-        public void setProteins(Integer proteins) {
-            this.proteins = proteins;
-        }
+    public void setProteins(Integer proteins) {
+        this.proteins = proteins;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public String getName() {
+        return name;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public void showFoodDetails(Food food) {
+    public void showFoodDetails(Food food) {
             System.out.println(food.toString());
         }
 
     public static void foodCreator(){
-        Scanner scanner = new Scanner(System.in);
         boolean salir = false;
 
         System.out.println("Bienvenido al creador de alimentos");
 
         while (!salir) {
             System.out.print("Nombre del alimento (o '0' para salir): ");
-            String name = scanner.nextLine();
+            String name = Kb.nextLine();
 
             if (name.equals("0")) {
                 salir=true; // Salir del bucle si el usuario ingresa "salir"
@@ -86,16 +88,16 @@ public class Food {
             else {
 
                 System.out.print("Cantidad de carbohidratos (en gramos): ");
-                Integer carbos = scanner.nextInt();
+                Integer carbos = Kb.nextInt();
 
                 System.out.print("Cantidad de grasas (en gramos): ");
-                Integer fats = scanner.nextInt();
+                Integer fats = Kb.nextInt();
 
                 System.out.print("Cantidad de proteínas (en gramos): ");
-                Integer proteins = scanner.nextInt();
+                Integer proteins = Kb.nextInt();
 
                 // Consumir la línea en blanco después del nextInt()
-                scanner.nextLine();
+                Kb.nextLine();
 
                 Food food = new Food(carbos, fats, proteins,name);
 
@@ -105,7 +107,7 @@ public class Food {
             }
 
             // Mostrar resumen de todos los alimentos almacenados en el ArrayList
-            for (Food food : foodList) {
+            /*for (Food food : foodList) {
                 System.out.println("Resumen del alimento:");
                 System.out.println("Nombre: " + food.getName());
                 System.out.println("Carbohidratos: " + food.getCarbos() + " gramos");
@@ -113,7 +115,24 @@ public class Food {
                 System.out.println("Proteínas: " + food.getProteins() + " gramos");
                 System.out.println("Calorías (para 100 gramos): " + food.getCalories(100) + " calorías");
                 System.out.println("--------------------------");
-            }
+            }*/
+        }
+
+    }
+    public static void printFoodElectionMenu(){
+        System.out.println("0. Salir");// Map para la dieta
+
+        for (int i = 0; i < foodList.size(); i++) {
+
+            Food food = foodList.get(i);
+            System.out.println("Resumen del alimento #" + (i + 1) + ":");
+            System.out.println("Nombre: " + food.getName());
+            System.out.println("Carbohidratos: " + food.getCarbos() + " gramos");
+            System.out.println("Grasas: " + food.getFats() + " gramos");
+            System.out.println("Proteínas: " + food.getProteins() + " gramos");
+            System.out.println("Calorías (para 100 gramos): " + food.getCalories(100) + " calorías");
+            System.out.println("--------------------------");
+
         }
 
     }

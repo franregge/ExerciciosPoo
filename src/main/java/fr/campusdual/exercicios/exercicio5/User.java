@@ -96,6 +96,7 @@ public class User {
         if (users.isEmpty()){
             System.out.println("No hay usuarios creados, sea usted el primero");
             userCreator();
+
         }else {
 
 
@@ -104,22 +105,22 @@ public class User {
                     System.out.println("1. Entrar con mi usuario");
                     System.out.println("2. Crear un usuario");
                     System.out.println("3. Cerrar sesión");
-                    System.out.println("3. Atrás");
-                    Integer menuOption= scanner.nextInt();
+                    System.out.println("4. Atrás");
+                    Integer menuOption= Kb.nextInt();
                     switch (menuOption){
                         case 1:
-                            System.out.println("Introduzca el nombre de usuario");
-                            String userName= scanner.nextLine();
-                            System.out.println("Introduzca la contraseña");
-                            String userPassword = scanner.nextLine();
-                            actualUser=userValidator(userName,userPassword);
+                            User loginUser= newUser();
+
+                            actualUser=userValidator(loginUser.name,loginUser.password);
+
                             if (actualUser== null){
                                 System.out.println("Parece que no recuerdas los datos de tu cuenta, creemos una nueva :");
                                 userCreator();
                             }
+                            break;
 
                         case 2:
-                            userCreator();
+                            actualUser = userCreator();
                             break;
                         case 3:
                             actualUser=null;
@@ -137,10 +138,10 @@ public class User {
     }
     public User actualLogin(){
         System.out.println("Introduzca su nombre de usuario");
-        String userName=scanner.nextLine();
+        String userName=Kb.nextLine();
 
         System.out.println("Introduzca su nombre contraseña");
-        String userPassword=scanner.nextLine();
+        String userPassword=Kb.nextLine();
 
         for (User user : users) {
             if((user.name.equals(userName))&&(user.password.equals(userPassword))){
@@ -175,7 +176,7 @@ public class User {
                                 return null;
                             } else {
                                 System.out.println("Introduce tu contraseña de Usuario : ");
-                                userPassword = scanner.nextLine();
+                                userPassword = Kb.nextLine();
                             }
                         }
                     }
@@ -191,7 +192,7 @@ public class User {
                     return null;
                 } else {
                     System.out.println("Introduce tu nombre de Usuario : ");
-                    userName = scanner.nextLine();
+                    userName = Kb.nextLine();
                 }
             }
         }
@@ -215,8 +216,39 @@ public class User {
         }
         return metabolismoBasal;
     }
+    public User userCreator(){
+        System.out.println("-----------------------");
+        System.out.println("Bienvenido al creador de Usuarios");
+        User newUser = newUser();
 
-    public User userCreator() {
+        while (userExists(newUser)){
+
+           newUser.setName(newUserName());
+
+        }
+
+        users.add(newUser);
+
+        return newUser;
+    }
+    public boolean userExists(User user){
+        boolean userExists = false;
+
+        for (User savedUser:users){
+            if (savedUser.getName().equals(user.getName())) {
+                userExists = true;
+            }
+        }
+        return userExists;
+    }
+    public String newUserName(){
+
+        System.out.println("Introduzca el nombre de Usuario : ");
+        String userName = Kb.nextLine();
+        return userName;
+    }
+
+    /*public User userCreator() {
 
         System.out.println("-----------------------");
         System.out.println("Bienvenido al creador de Usuarios");
@@ -238,7 +270,7 @@ public class User {
 
             if (nombreExistente) {
                 System.out.println("Ya existe un usuario con ese nombre, elija otro : ");
-                newUser.setName(scanner.nextLine());
+                newUser.setName(Kb.nextLine());
             } else {
                 nombreDisponible = true;
             }
@@ -250,12 +282,12 @@ public class User {
         System.out.println("Usuario guardado en la base de datos");
 
         return newUser;
-    }
+    }*/
     public User newUser(){
         System.out.println("Introduzca el nombre de Usuario : ");
-        String userName = scanner.nextLine();
+        String userName = Kb.nextLine();
         System.out.println("Introduzca su contraseña : ");
-        String userPassword = scanner.nextLine();
+        String userPassword = Kb.nextLine();
         User newUser = new User();
         newUser.setName(userName);
         newUser.setPassword(userPassword);
@@ -275,7 +307,7 @@ public class User {
         String userPassword = null;
 
         System.out.println("Introduce tu contraseña de Usuario : ");
-        userPassword = scanner.nextLine();
+        userPassword = Kb.nextLine();
         User userToRemove = null;
         if (actualUser.getPassword().equals(userPassword)) {
             userToRemove = actualUser;
@@ -284,7 +316,7 @@ public class User {
             int intentos = 3;
             while (intentos > 0) {
                 System.out.println("Introduce tu contraseña de Usuario : ");
-                userPassword = scanner.nextLine();
+                userPassword = Kb.nextLine();
 
                 if (userToRemove.getPassword().equals(userPassword)) {
                     users.remove(userToRemove);
@@ -312,23 +344,23 @@ public class User {
     }
     static void modificarParametrosTMBActuales() {
         System.out.println("Introduzca su edad :");
-        Integer age = scanner.nextInt();
+        Integer age = Kb.nextInt();
         actualUser.setAge(age);
 
         System.out.println("Introduzca su peso en kilos:");
-        Integer weight = scanner.nextInt();
+        Integer weight = Kb.nextInt();
         actualUser.setWeight(weight);
         System.out.println("Su peso es : "+ weight);
 
         System.out.println("Introduzca su altura en centímetros:");
-        Integer height = scanner.nextInt();
+        Integer height = Kb.nextInt();
         actualUser.setHeight(height);
         System.out.println("Su altura es : "+ height);
 
         System.out.println("¿Hombre o mujer? : ");
         System.out.println( "1. Hombre");
         System.out.println( "2. Mujer");
-        Integer sexOption = scanner.nextInt();
+        Integer sexOption = Kb.nextInt();
 
         switch (sexOption){
             case 1 :
